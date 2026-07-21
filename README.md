@@ -81,5 +81,3 @@ Open `http://localhost:3000` with your browser to see the result.
 ---
 
 ## 7. Demo
-
-[https://github.com/user-attachments/assets/1d73c365-c9b9-441c-86c0-b2b12c3ce27d](https://github.com/user-attachments/assets/1d73c365-c9b9-441c-86c0-b2b12c3ce27d)
