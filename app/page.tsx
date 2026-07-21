@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
@@ -27,12 +26,14 @@ export default function Home() {
     offset: ["start start", "end start"],
   });
 
-  // Path draws in as you scroll past the hero
   const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <div>
-      <div ref={heroRef} className="relative w-full h-screen">
+      <div
+        ref={heroRef}
+        className="relative w-full min-h-screen flex flex-col overflow-hidden"
+      >
         {/* Vine overlay */}
         <svg
           className="absolute inset-0 w-full h-full z-20 pointer-events-none"
@@ -56,34 +57,62 @@ export default function Home() {
           />
         </svg>
 
-        <div className="flex flex-row h-full relative">
-          <div className="w-full max-w-full h-screen mx-auto px-2 bg-[#f7dae7] text-[#ba5a87] relative">
-            <div className="px-[20%] flex flex-col gap-5 absolute top-[30%]">
-              <h1 className="font-outfit text-7xl text-[#4a2e27]">Your skin matters...</h1>
-              <p className="font-garamond text-pink-800 text-2xl">
+        {/* Text + image row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 flex-1 relative">
+          <div className="relative bg-[#f7dae7] text-[#ba5a87] flex items-center py-12 sm:py-16">
+            <div className="px-6 sm:px-10 lg:px-[10%] flex flex-col gap-3 sm:gap-5 max-w-full">
+              <h1 className="font-outfit text-2xl xs:text-3xl sm:text-5xl lg:text-7xl text-[#4a2e27] leading-tight break-words">
+                Your skin matters...
+              </h1>
+              <p className="font-garamond text-pink-800 text-sm sm:text-xl lg:text-2xl">
                 mari. is built on a simple idea: your skin deserves products
                 made for it, not adjusted to fit it
               </p>
             </div>
           </div>
-          <img src="/hero.jpg" alt="" className="object-cover h-full" />
+
+          <div className="hidden md:block w-full overflow-hidden">
+            <img
+              src="/hero.jpg"
+              alt=""
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
-        {/* Feature boxes */}
-<section className="absolute bottom-6 left-0 right-0 px-[10%]">
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-x-20">
-    {features.map((f) => (
-      <div
-        key={f.title}
-        className="group p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 hover:border-[#ba5a87] hover:bg-white/20 hover:shadow-lg hover:shadow-[#f7dae7]/50 transition-all duration-300"
-      >
-        <h3 className="font-garamond text-2xl text-[#ba5a87] mb-3">
-          {f.title}
-        </h3>
-        <p className="text-[#8a4067] leading-relaxed">{f.description}</p>
-      </div>
-    ))}
-  </div>
-</section>
+
+        {/* Feature boxes — liquid glass, pink tint */}
+        <section className="relative z-30 px-6 sm:px-10 lg:px-[10%] py-8 sm:py-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {features.map((f) => (
+              <div
+                key={f.title}
+                className="
+                  relative overflow-hidden rounded-3xl p-5 sm:p-6
+                  bg-gradient-to-br from-pink-200/40 via-pink-100/20 to-white/10
+                  backdrop-blur-xl backdrop-saturate-150
+                  border border-white/40
+                  shadow-[0_8px_32px_rgba(186,90,135,0.15)]
+                  before:content-[''] before:absolute before:inset-0
+                  before:bg-gradient-to-b before:from-white/30 before:to-transparent
+                  before:pointer-events-none
+                  hover:border-[#ba5a87]/60 hover:shadow-[0_8px_40px_rgba(186,90,135,0.3)]
+                  hover:bg-gradient-to-br hover:from-pink-200/50 hover:via-pink-100/30 hover:to-white/20
+                  transition-all duration-300
+                "
+              >
+                {/* subtle top-edge glass highlight */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-white/60" />
+
+                <h3 className="relative font-garamond text-lg sm:text-xl lg:text-2xl text-[#8a2f52] mb-2 sm:mb-3">
+                  {f.title}
+                </h3>
+                <p className="relative text-[#7a3a56] text-sm sm:text-base leading-relaxed">
+                  {f.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
