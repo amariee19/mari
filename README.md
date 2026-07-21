@@ -1,6 +1,8 @@
 # mari. — AR Virtual Try-On Engine for Uploaded Photos
 
-This document details the architecture and feature set of **mari.**, an e-commerce platform offering augmented reality (AR) virtual try-ons on uploaded user images for cosmetics directly in the browser.
+# TryOnCosmetics — Real-Time AR Virtual Try-On Engine
+
+This document details the architecture and feature set of **TryOnCosmetics**, an e-commerce platform offering real-time augmented reality (AR) virtual try-ons for cosmetics directly in the browser.
 
 ---
 
@@ -68,6 +70,6 @@ Open `http://localhost:3000` with your browser to see the result.
 
 ---
 
-## 6. Demo
+## 7. Demo
 
 [https://github.com/user-attachments/assets/ae8a69f7-4a1e-4098-bbee-f51ebc8c16c9](https://github.com/user-attachments/assets/ae8a69f7-4a1e-4098-bbee-f51ebc8c16c9)
