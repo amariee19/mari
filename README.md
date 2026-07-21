@@ -1,12 +1,12 @@
-# TryOnCosmetics — AR Virtual Try-On Engine for Uploaded Photos
+# mari. — AR Virtual Try-On Engine for Uploaded Photos
 
-This document details the architecture and feature set of **TryOnCosmetics**, an e-commerce platform offering augmented reality (AR) virtual try-ons on uploaded user images for cosmetics directly in the browser.
+This document details the architecture and feature set of **mari.**, an e-commerce platform offering augmented reality (AR) virtual try-ons on uploaded user images for cosmetics directly in the browser.
 
 ---
 
 ## 1. System Overview
 
-TryOnCosmetics is a client-side virtual try-on system designed for seamless cosmetic exploration. By utilizing edge-based facial landmark tracking, the system overlays realistic cosmetic textures (e.g., lipsticks, lip glosses, and makeup shades) directly onto uploaded photos.
+mari. is a client-side virtual try-on system designed for seamless cosmetic exploration. By utilizing edge-based facial landmark tracking, the system overlays realistic cosmetic textures (e.g., lipsticks, lip glosses, and makeup shades) directly onto uploaded photos.
 
 * **Frontend**: Next.js 16 (TypeScript) + Tailwind CSS
 * **Engine**: MediaPipe Vision AI (Face Landmarker Model)
@@ -46,8 +46,8 @@ The engine uses targeted rendering modes to deliver accurate cosmetic overlays o
 * [x] HTML5 Canvas Overlay & Blending Logic
 * [x] Redux Toolkit Setup for Global Application State
 * [x] Responsive Product Catalog & Collections Page (`/collections`)
-* [] Suspense-Wrapped Dynamic URL Routing for SSR Compatibility
 * [x] Interactive Shade Selection & Cart Management
+* [] Suspense-Wrapped Dynamic URL Routing for SSR Compatibility
 * [ ] **WebGL Shader Engine**: WebGL integration to simulate complex light reflections, high-gloss, and specular shine finishes.
 * [ ] **User Authentication (Supabase)**: Implement Supabase Auth for user accounts, saved try-on sessions, and user profiles.
 * [ ] **State Persistence (Redux Persist / Supabase)**: Persist shopping cart and try-on state across page refreshes and user sessions.
