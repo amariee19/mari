@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { products, Product } from "@/lib/collectionsProducts";
@@ -12,15 +13,13 @@ const CATEGORIES: Product["category"][] = [
   "Lip liner",
 ];
 
-export default function Collections() {
-const searchParams = useSearchParams();
-const categoryParam = searchParams.get("category") as Product["category"] | null;
-const [activeCategory, setActiveCategory] = useState<Product["category"] | "All">(
-  categoryParam ?? "All"
-);
+function CollectionsContent() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category") as Product["category"] | null;
+  const [activeCategory, setActiveCategory] = useState<Product["category"] | "All">(
+    categoryParam ?? "All"
+  );
 
-  // Grouped once from the single products array — filtering is then just
-  // an object lookup, no separate arrays, no if/else chain.
   const grouped = products.reduce<Record<string, Product[]>>((acc, p) => {
     if (!acc[p.category]) acc[p.category] = [];
     acc[p.category].push(p);
@@ -114,5 +113,13 @@ const [activeCategory, setActiveCategory] = useState<Product["category"] | "All"
         ))}
       </div>
     </div>
+  );
+}
+
+export default function Collections() {
+  return (
+    <Suspense fallback={<div className="bg-[#f7dae7] min-h-screen" />}>
+      <CollectionsContent />
+    </Suspense>
   );
 }
