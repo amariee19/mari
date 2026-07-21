@@ -1,72 +1,60 @@
+# TryOnCosmetics — AR Virtual Try-On Engine for Uploaded Photos
 
-# TryOnCosmetics — Real-Time AR Virtual Try-On Engine
-
-This document details the architecture and feature set of **TryOnCosmetics**, an e-commerce platform offering real-time augmented reality (AR) virtual try-ons for cosmetics directly in the browser.
+This document details the architecture and feature set of **TryOnCosmetics**, an e-commerce platform offering augmented reality (AR) virtual try-ons on uploaded user images for cosmetics directly in the browser.
 
 ---
 
 ## 1. System Overview
 
-TryOnCosmetics is a privacy-first, client-side virtual try-on system designed for seamless cosmetic exploration. By utilizing edge-based facial landmark tracking, the system overlays realistic cosmetic textures (e.g., lipsticks, lip glosses, and makeup shades) in real time without transmitting user video feeds to external servers.
+TryOnCosmetics is a client-side virtual try-on system designed for seamless cosmetic exploration. By utilizing edge-based facial landmark tracking, the system overlays realistic cosmetic textures (e.g., lipsticks, lip glosses, and makeup shades) directly onto uploaded photos.
 
 * **Frontend**: Next.js 16 (TypeScript) + Tailwind CSS
-* **Engine**: MediaPipe Vision AI (Face Landmarker)
-* **State & UI**: React Suspense + URL Search Parameter State
-* **Optimization**: WebGL / Canvas dynamic texture blending
+* **Engine**: MediaPipe Vision AI (Face Landmarker Model)
+* **State Management**: Redux Toolkit + URL Search Parameter State
+* **Rendering**: HTML5 Canvas 2D Context API
 
 ---
 
 ## 2. Detection & Overlay Pipeline
 
-The virtual try-on system processes live video feeds through a lightweight, multi-stage client pipeline:
+The virtual try-on system processes uploaded images through a lightweight, multi-stage client pipeline:
 
 ### The Logic Flow:
 
-1. **Extraction**: MediaPipe tracks precise 3D facial landmarks from the webcam feed in real time.
+1. **Extraction**: MediaPipe Face Landmarker identifies 3D facial coordinates directly from the uploaded photo.
 2. **Segmentation**: Specific index regions (e.g., upper and lower lip contours) are mapped into closed polygonal paths.
-3. **Shader Blending**: Selected product colors and finishes (matte, satin, gloss) are dynamically blended over the target coordinates using composite alpha channels.
-4. **Lighting Correction**: Relative luminance in the bounding box is calculated to adjust color opacity dynamically under varying room lighting.
-5. **State Synchronization**: Selected shades and product metadata sync seamlessly with the e-commerce shopping cart and collections filter via URL search params.
+3. **Canvas Blending**: Selected product colors are dynamically blended over target coordinates using composite alpha channels and canvas fill operations.
+4. **State Synchronization**: Selected shades and product metadata sync across the application via Redux Toolkit and URL search params.
 
 ---
 
 ## 3. Feature Matrix
 
-The engine uses tailored rendering modes to deliver realistic cosmetic simulations:
+The engine uses targeted rendering modes to deliver accurate cosmetic overlays on static photos:
 
 | Feature | Description | Performance / Precision |
 | --- | --- | --- |
-| **Lip Contour Segmentation** | Tracks inner and outer lip boundaries across 40+ dedicated landmark points. | High Precision |
-| **Texture & Finish Emulation** | Simulates matte, satin, and high-gloss specular highlights dynamically on the canvas layer. | Real-Time |
-| **Lighting Compensation** | Adjusts RGB blending values based on real-time surface ambient light estimation. | High |
+| **Lip Contour Segmentation** | Tracks inner and outer lip boundaries using MediaPipe Face Landmarker points. | High Precision |
+| **Color & Opacity Blending** | Applies custom RGB shades with dynamic alpha masking onto the canvas layer. | Instant Rendering |
+| **Lighting & Tone Adjustments** | Adjusts color intensity based on photo lighting parameters. | High |
 
 ---
 
-## 4. Privacy & Performance
+## 4. Development Status & Roadmap
 
-### Privacy-by-Design
-
-* **Client-Side Execution**: Camera processing runs entirely inside the user's browser; no image or video data ever leaves the local device.
-* **Transient Memory Usage**: Frame buffers are cleared immediately after rendering, ensuring zero persistent photo storage.
-
-### Performance Optimization
-
-* **Turbopack Build Strategy**: Next.js App Router architecture with optimized client components and `<Suspense>` boundaries.
-* **Decoupled Render Cycle**: Canvas texture drawing is decoupled from heavy React re-renders to maintain 60 FPS output on desktop and mobile devices.
-
----
-
-## 5. Development Status
-
-* [x] Initial MediaPipe Face Landmarker Integration
-* [x] Real-Time Canvas Overlay & Shader Logic
+* [x] MediaPipe Face Landmarker Integration for Static Photo Uploads
+* [x] HTML5 Canvas Overlay & Blending Logic
+* [x] Redux Toolkit Setup for Global Application State
 * [x] Responsive Product Catalog & Collections Page (`/collections`)
-* [x] **Suspense-Wrapped Dynamic URL Routing**: SSR build compatibility for stateful search queries.
-* [x] Interactive Shade Selection & Cart Integration
+* [] Suspense-Wrapped Dynamic URL Routing for SSR Compatibility
+* [x] Interactive Shade Selection & Cart Management
+* [ ] **WebGL Shader Engine**: WebGL integration to simulate complex light reflections, high-gloss, and specular shine finishes.
+* [ ] **User Authentication (Supabase)**: Implement Supabase Auth for user accounts, saved try-on sessions, and user profiles.
+* [ ] **State Persistence (Redux Persist / Supabase)**: Persist shopping cart and try-on state across page refreshes and user sessions.
 
 ---
 
-## 6. Setup
+## 5. Setup
 
 ```bash
 git clone https://github.com/amariee19/mari.git
@@ -80,6 +68,6 @@ Open `http://localhost:3000` with your browser to see the result.
 
 ---
 
-## 7. Demo
+## 6. Demo
 
-https://github.com/user-attachments/assets/ae8a69f7-4a1e-4098-bbee-f51ebc8c16c9
+[https://github.com/user-attachments/assets/ae8a69f7-4a1e-4098-bbee-f51ebc8c16c9](https://github.com/user-attachments/assets/ae8a69f7-4a1e-4098-bbee-f51ebc8c16c9)
