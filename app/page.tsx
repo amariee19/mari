@@ -58,25 +58,37 @@ export default function Home() {
         </svg>
 
         {/* Text + image row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 flex-1 relative">
-          <div className="relative bg-[#f7dae7] text-[#ba5a87] flex items-center py-12 sm:py-16">
-            <div className="px-6 sm:px-10 lg:px-[10%] flex flex-col gap-3 sm:gap-5 max-w-full">
-              <h1 className="font-outfit text-2xl xs:text-3xl sm:text-5xl lg:text-7xl text-[#4a2e27] leading-tight break-words">
-                Your skin matters...
-              </h1>
-              <p className="font-garamond text-pink-800 text-sm sm:text-xl lg:text-2xl">
-                mari. is built on a simple idea: your skin deserves products
-                made for it, not adjusted to fit it
-              </p>
-            </div>
-          </div>
-
-          <div className="hidden md:block w-full overflow-hidden">
+        <div className="relative flex-1 min-h-[560px] sm:min-h-[640px] md:min-h-0 md:grid md:grid-cols-2">
+          {/* Image layer — fills the whole hero on mobile, becomes the right column on md+ */}
+          <div className="absolute inset-0 md:relative md:inset-auto md:order-2 w-full h-full overflow-hidden">
             <img
               src="/hero.jpg"
               alt=""
               className="w-full h-full object-cover"
             />
+          </div>
+
+          {/* Text layer — overlays the image on mobile, becomes the left column on md+ */}
+          <div
+            className="
+              relative z-10 md:z-auto md:order-1
+              flex items-end md:items-center
+              min-h-[560px] sm:min-h-[640px] md:min-h-0
+              py-10 sm:py-12 md:py-16
+              text-white md:text-[#ba5a87]
+              bg-gradient-to-t from-black/70 via-black/30 to-transparent
+              md:bg-none md:bg-[#f7dae7]
+            "
+          >
+            <div className="px-6 sm:px-10 lg:px-[10%] flex flex-col gap-3 sm:gap-5 max-w-full">
+              <h1 className="font-outfit text-2xl xs:text-3xl sm:text-5xl lg:text-7xl text-white md:text-[#4a2e27] leading-tight break-words drop-shadow-md md:drop-shadow-none">
+                Your skin matters...
+              </h1>
+              <p className="font-garamond text-white/90 md:text-pink-800 text-sm sm:text-xl lg:text-2xl drop-shadow-sm md:drop-shadow-none">
+                mari. is built on a simple idea: your skin deserves products
+                made for it, not adjusted to fit it
+              </p>
+            </div>
           </div>
         </div>
 
@@ -100,9 +112,7 @@ export default function Home() {
                   transition-all duration-300
                 "
               >
-                {/* subtle top-edge glass highlight */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-white/60" />
-
                 <h3 className="relative font-garamond text-lg sm:text-xl lg:text-2xl text-[#8a2f52] mb-2 sm:mb-3">
                   {f.title}
                 </h3>

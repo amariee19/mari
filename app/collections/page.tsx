@@ -16,6 +16,7 @@ const CATEGORIES: Product["category"][] = [
 function CollectionsContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category") as Product["category"] | null;
+  const searchParam = searchParams.get("search")?.toLowerCase() ?? "";
   const [activeCategory, setActiveCategory] = useState<Product["category"] | "All">(
     categoryParam ?? "All"
   );
@@ -25,9 +26,20 @@ function CollectionsContent() {
     acc[p.category].push(p);
     return acc;
   }, {});
-
-  const visibleProducts =
+   const categoryFiltered =
     activeCategory === "All" ? products : grouped[activeCategory] ?? [];
+
+  const visibleProducts = searchParam
+    ? categoryFiltered.filter(
+        (p) =>
+          p.name.toLowerCase().includes(searchParam) ||
+          p.tagline.toLowerCase().includes(searchParam) ||
+          p.shades.some((s) => s.shadeName.toLowerCase().includes(searchParam))
+      )
+    : categoryFiltered;
+
+  // const visibleProducts =
+  //   activeCategory === "All" ? products : grouped[activeCategory] ?? [];
 
   return (
     <div className="bg-[#f7dae7] min-h-screen">
@@ -72,45 +84,57 @@ function CollectionsContent() {
           </button>
         ))}
       </div>
+      {searchParam && (
+        <p className="text-center text-[#600047] font-openSans mb-6 px-6">
+          {visibleProducts.length} result{visibleProducts.length !== 1 ? "s" : ""} for
+          "<span className="font-semibold">{searchParam}</span>"
+        </p>
+      )}
 
       {/* Product grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-6 pb-24 max-w-7xl mx-auto">
-        {visibleProducts.map((product) => (
-          <Link
-            key={product.slug}
-            href={`/collections/${product.slug}`}
-            className="group"
-          >
-            <div className="bg-[#ffd9da] aspect-square rounded-lg overflow-hidden mb-3">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            <p className="text-xs uppercase tracking-wide text-[#8a6a5a] mb-1">
-              {product.category}
-            </p>
-            <h3 className="font-outfit text-[#39131f] text-lg mb-1">
-              {product.name}
-            </h3>
-            <p className="text-sm text-[#8a6a5a] mb-2">{product.tagline}</p>
-            <div className="flex items-center justify-between">
-              <span className="text-[#800f2f] font-semibold">
-                ${product.price}
-              </span>
-              <div className="flex gap-1">
-                {product.shades.slice(0, 4).map((shade, i) => (
-                  <span
-                    key={i}
-                    className="w-3 h-3 rounded-full border border-black/10"
-                    style={{ backgroundColor: shade.colour }}
-                  />
-                ))}
-              </div>
-            </div>
-          </Link>
-        ))}
+        {visibleProducts.map((product) => {
+  const matchedShade = searchParam
+    ? product.shades.find((s) => s.shadeName.toLowerCase().includes(searchParam))
+    : null;
+
+  const href = matchedShade
+    ? `/collections/${product.slug}?shade=${encodeURIComponent(matchedShade.shadeName)}`
+    : `/collections/${product.slug}`;
+
+  return (
+    <Link key={product.slug} href={href} className="group">
+      <div className="bg-[#ffd9da] aspect-square rounded-lg overflow-hidden mb-3">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+      <p className="text-xs uppercase tracking-wide text-[#8a6a5a] mb-1">
+        {product.category}
+      </p>
+      <h3 className="font-outfit text-[#39131f] text-lg mb-1">
+        {product.name}
+      </h3>
+      <p className="text-sm text-[#8a6a5a] mb-2">{product.tagline}</p>
+      <div className="flex items-center justify-between">
+        <span className="text-[#800f2f] font-semibold">
+          ${product.price}
+        </span>
+        <div className="flex gap-1">
+          {product.shades.slice(0, 4).map((shade, i) => (
+            <span
+              key={i}
+              className="w-3 h-3 rounded-full border border-black/10"
+              style={{ backgroundColor: shade.colour }}
+            />
+          ))}
+        </div>
+      </div>
+    </Link>
+  );
+})}
       </div>
     </div>
   );
